@@ -5,15 +5,14 @@
  */
 package activofijos.controler;
 
+import Reportes.imprimirSimple;
 import activofijos.view.viewClases;
 import activosfijos.model.clasesDAO;
 import activosfijos.model.modelClases;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,6 +23,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import net.sf.jasperreports.engine.JRException;
 import validaciones.validarTexto;
 
 /**
@@ -72,8 +72,13 @@ public class controlerClases implements ActionListener {
             borrar();
             cargarPrimerRegistro();
             cargarGrid(vistaClases.getTblClases());
-        }        
-        else if (ae.getSource() == vistaClases.getBntSalir()){
+        }else if(ae.getSource() == vistaClases.getBntImprimir())  {
+            try {
+                imprimir();
+            } catch (JRException ex) {
+                Logger.getLogger(controlerClases.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if (ae.getSource() == vistaClases.getBntSalir()){
             vistaClases.dispose();
         }
                 
@@ -109,6 +114,7 @@ public class controlerClases implements ActionListener {
         vistaClases.getBntNuevo().addActionListener(this);
         vistaClases.getBntGuardar().addActionListener(this);
         vistaClases.getBntBorrar().addActionListener(this);
+        vistaClases.getBntImprimir().addActionListener(this);
         vistaClases.getBntSalir().addActionListener(this);
     }
 
@@ -217,5 +223,11 @@ public class controlerClases implements ActionListener {
          
     }
     
+    public void imprimir() throws JRException{
+        String reporteRuta = getClass().getResource("/reportes/clases.jasper").getPath();
+        imprimirSimple myImpresion =  new imprimirSimple();
+        myImpresion.imprimirClases(reporteRuta);
+
+    }
     
 }

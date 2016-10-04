@@ -15,13 +15,13 @@ import javax.swing.JOptionPane;
 public class probar {
     public static void main(String[] args) {
         Conexion conexion = new Conexion();
-        viewClases miVista = new viewClases(null, true);
+        viewClases miVista = new viewClases(null, false); //true = modal, false = modeless
         new controlerClases(miVista);
         
         if (conexion.getConexion() != null) {
             miVista.pack();
             miVista.setLocationRelativeTo(null);
-            miVista.setVisible(true);      
+            miVista.setVisible(true);
         } else{
             JOptionPane.showMessageDialog(null, "No se realizó la Conexión");
         }
